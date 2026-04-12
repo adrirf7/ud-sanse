@@ -29,8 +29,8 @@ export default function Navbar() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between">
         {/* Logo */}
         <a href="#inicio" className="flex items-center gap-3 group">
-          <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-600 to-blue-900 border-2 border-blue-400/40 flex items-center justify-center glow-blue">
-            <span className="font-display text-white text-sm tracking-wider">UDS</span>
+          <div className="w-10 h-10 flex items-center justify-center">
+            <img src="src\assets\img\Escudo_UDSanse.png" alt="Escudo_udSanse" />
           </div>
           <div className="hidden sm:block">
             <span className="font-display text-white text-xl tracking-widest">UD SANSE</span>

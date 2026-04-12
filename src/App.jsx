@@ -1,5 +1,6 @@
 import './index.css'
 import Navbar from './components/Navbar'
+import Carousel from './components/Carousel'
 import Hero from './components/Hero'
 import Partidos from './components/Partidos'
 import Clasificacion from './components/Clasificacion'
@@ -11,6 +12,7 @@ function App() {
     <div className="min-h-screen bg-sanse-navy text-white">
       <Navbar />
       <main>
+        <Carousel />
         <Hero />
         <Partidos />
         <Clasificacion />

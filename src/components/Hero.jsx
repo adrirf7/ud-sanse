@@ -17,15 +17,6 @@ export default function Hero() {
         <div className="particle-1 absolute top-[15%] left-[8%] w-64 h-64 rounded-full bg-blue-600/10 blur-3xl" />
         <div className="particle-2 absolute bottom-[20%] right-[6%] w-80 h-80 rounded-full bg-blue-800/10 blur-3xl" />
         <div className="particle-3 absolute top-[50%] left-[50%] w-96 h-96 rounded-full bg-blue-500/5 blur-3xl -translate-x-1/2 -translate-y-1/2" />
-        {/* Grid pattern */}
-        <div
-          className="absolute inset-0 opacity-[0.03]"
-          style={{
-            backgroundImage:
-              'linear-gradient(rgba(255,255,255,0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.5) 1px, transparent 1px)',
-            backgroundSize: '60px 60px',
-          }}
-        />
         {/* Top vignette */}
         <div className="absolute top-0 left-0 right-0 h-32 bg-gradient-to-b from-sanse-navy/60 to-transparent" />
         {/* Bottom vignette */}
@@ -36,6 +27,12 @@ export default function Hero() {
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-28 pb-20 flex flex-col lg:flex-row items-center gap-16 lg:gap-12">
         {/* Left: Title */}
         <div className="flex-1 text-center lg:text-left">
+          {/* Logo space */}
+          <div className="reveal-1 mb-8 flex justify-center lg:justify-start">
+            <div className="w-32 h-32 rounded-full bg-white/5 border-2 border-blue-500/30 flex items-center justify-center backdrop-blur-sm">
+              <span className="text-4xl font-bold text-blue-400">LOGO</span>
+            </div>
+          </div>
           {/* Badge */}
           <div className="reveal-1 inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-blue-600/20 border border-blue-500/30 text-blue-300 text-xs font-semibold tracking-widest uppercase mb-6">
             <span className="w-1.5 h-1.5 rounded-full bg-blue-400 animate-pulse" />
