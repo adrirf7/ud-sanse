@@ -82,7 +82,7 @@ export default function Hero() {
 
         {/* Right: Next match card */}
         <div className="reveal-3 flex-shrink-0 w-full max-w-sm">
-          <div className="glass rounded-2xl p-6 border border-blue-500/20 upcoming-pulse shadow-2xl shadow-blue-900/30">
+          <div className="rounded-2xl p-6 border border-blue-500/40 upcoming-pulse shadow-2xl shadow-black/60 bg-black/60 backdrop-blur-xl">
             {/* Header */}
             <div className="flex items-center justify-between mb-6">
               <span className="text-xs font-bold tracking-widest uppercase text-blue-400">
