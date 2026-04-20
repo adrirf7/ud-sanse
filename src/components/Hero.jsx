@@ -1,4 +1,6 @@
 import { Calendar, MapPin, ChevronDown } from 'lucide-react';
+import escudo from '../assets/img/Escudo_UDSanse.png';
+import heroBg from '../assets/img/UD Sanse Segunda Federación 2024.jpg.webp';
 
 const nextMatch = {
   fecha: "15 Mar 2026",
@@ -11,36 +13,31 @@ const nextMatch = {
 
 export default function Hero() {
   return (
-    <section id="inicio" className="relative min-h-screen flex flex-col justify-center overflow-hidden hero-gradient">
-      {/* Decorative particles */}
-      <div className="absolute inset-0 pointer-events-none overflow-hidden">
-        <div className="particle-1 absolute top-[15%] left-[8%] w-64 h-64 rounded-full bg-blue-600/10 blur-3xl" />
-        <div className="particle-2 absolute bottom-[20%] right-[6%] w-80 h-80 rounded-full bg-blue-800/10 blur-3xl" />
-        <div className="particle-3 absolute top-[50%] left-[50%] w-96 h-96 rounded-full bg-blue-500/5 blur-3xl -translate-x-1/2 -translate-y-1/2" />
-        {/* Top vignette */}
-        <div className="absolute top-0 left-0 right-0 h-32 bg-gradient-to-b from-sanse-navy/60 to-transparent" />
-        {/* Bottom vignette */}
+    <section id="inicio" className="relative min-h-screen flex flex-col justify-center overflow-hidden" style={{ backgroundImage: `url(${heroBg})`, backgroundSize: 'cover', backgroundPosition: 'center top' }}>
+      {/* Overlay */}
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute inset-0 bg-gradient-to-br from-sanse-navy/95 via-sanse-navy/80 to-sanse-navy/90" />
+        <div className="absolute top-0 left-0 right-0 h-32 bg-gradient-to-b from-sanse-navy/80 to-transparent" />
         <div className="absolute bottom-0 left-0 right-0 h-40 bg-gradient-to-t from-sanse-navy to-transparent" />
       </div>
 
       {/* Main content */}
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-28 pb-20 flex flex-col lg:flex-row items-center gap-16 lg:gap-12">
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 pb-10 flex flex-col lg:flex-row items-center gap-10 lg:gap-24">
         {/* Left: Title */}
         <div className="flex-1 text-center lg:text-left">
-          {/* Logo space */}
-          <div className="reveal-1 mb-8 flex justify-center lg:justify-start">
-            <div className="w-32 h-32 rounded-full bg-white/5 border-2 border-blue-500/30 flex items-center justify-center backdrop-blur-sm">
-              <span className="text-4xl font-bold text-blue-400">LOGO</span>
-            </div>
+          {/* Escudo */}
+          <div className="reveal-1 mb-6 flex justify-center lg:justify-start">
+            <img src={escudo} alt="Escudo UD Sanse" className="w-28 h-28 object-contain drop-shadow-[0_0_20px_rgba(59,130,246,0.3)]" />
           </div>
+
           {/* Badge */}
-          <div className="reveal-1 inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-blue-600/20 border border-blue-500/30 text-blue-300 text-xs font-semibold tracking-widest uppercase mb-6">
+          <div className="reveal-1 inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-600/20 border border-blue-500/30 text-blue-300 text-xs font-semibold tracking-widest uppercase mb-4">
             <span className="w-1.5 h-1.5 rounded-full bg-blue-400 animate-pulse" />
             Segunda RFEF · Temporada 2025/26
           </div>
 
           {/* Club name */}
-          <h1 className="reveal-2 font-display text-[clamp(4rem,14vw,9rem)] leading-none text-white tracking-wider mb-4">
+          <h1 className="reveal-2 font-display text-[clamp(3.5rem,10vw,7rem)] leading-none text-white tracking-wider mb-3">
             UD{' '}
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-blue-200">
               SANSE
@@ -48,36 +45,36 @@ export default function Hero() {
           </h1>
 
           {/* Tagline */}
-          <p className="reveal-3 text-lg sm:text-xl text-gray-300 font-light tracking-widest uppercase mb-10">
+          <p className="reveal-3 text-base text-gray-300 font-light tracking-widest uppercase mb-8">
             La Unión es Nuestra Fuerza
           </p>
 
-          {/* CTA buttons */}
-          <div className="reveal-4 flex flex-wrap gap-4 justify-center lg:justify-start">
+          {/* Botones */}
+          <div className="reveal-4 flex gap-4 justify-center lg:justify-start mb-8">
             <a
               href="#resultados"
-              className="px-8 py-3.5 bg-blue-600 hover:bg-blue-500 text-white font-semibold rounded-full transition-all duration-300 hover:scale-105 active:scale-95 hover:shadow-lg hover:shadow-blue-600/30"
+              className="px-7 py-3 bg-blue-600 hover:bg-blue-500 text-white font-semibold rounded-full transition-all duration-300 hover:scale-105 active:scale-95 hover:shadow-lg hover:shadow-blue-600/30"
             >
               Ver Resultados
             </a>
             <a
               href="#noticias"
-              className="px-8 py-3.5 glass text-white font-semibold rounded-full transition-all duration-300 hover:bg-white/10 hover:scale-105 active:scale-95 border border-white/15"
+              className="px-7 py-3 glass text-white font-semibold rounded-full transition-all duration-300 hover:bg-white/10 hover:scale-105 active:scale-95 border border-white/15"
             >
               Últimas Noticias
             </a>
           </div>
 
           {/* Quick stats */}
-          <div className="reveal-4 mt-12 flex flex-wrap gap-8 justify-center lg:justify-start">
+          <div className="reveal-4 flex gap-8 justify-center lg:justify-start">
             {[
               { label: 'Puntos', value: '53', color: 'text-blue-300' },
               { label: 'Posición', value: '2º', color: 'text-yellow-300' },
               { label: 'Jornada', value: '26', color: 'text-blue-300' },
             ].map((stat) => (
               <div key={stat.label} className="text-center lg:text-left">
-                <div className={`font-display text-4xl ${stat.color}`}>{stat.value}</div>
-                <div className="text-xs text-gray-400 tracking-widest uppercase">{stat.label}</div>
+                <div className={`font-display text-3xl leading-none ${stat.color}`}>{stat.value}</div>
+                <div className="text-[10px] text-gray-400 tracking-widest uppercase mt-1">{stat.label}</div>
               </div>
             ))}
           </div>

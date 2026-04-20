@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
-import { Calendar, MapPin, Clock, ChevronRight } from 'lucide-react';
+import { Calendar, MapPin, Clock } from 'lucide-react';
 import { resultados, proximosPartidos } from '../data/mockData';
 
 function useInView(threshold = 0.15) {
@@ -32,35 +32,31 @@ function ResultCard({ partido, delay }) {
   const resultado = partido.resultado;
 
   return (
-    <div className={`fade-up delay-${delay} glass rounded-2xl p-5 hover:border-blue-500/30 border border-white/5 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-blue-900/20`}>
+    <div className={`fade-up delay-${delay} glass rounded-2xl p-8 hover:border-blue-500/30 border border-white/5 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-blue-900/20 flex flex-col justify-between min-h-[260px]`}>
       {/* Header */}
-      <div className="flex items-center justify-between mb-4">
+      <div className="flex items-center justify-between mb-6">
         <span className="text-xs text-gray-500 font-medium">{partido.jornada} · {partido.competicion}</span>
         <span className="text-xs font-semibold text-gray-400">{partido.fecha}</span>
       </div>
 
       {/* Match */}
       <div className="flex items-center gap-3">
-        {/* Local */}
         <div className={`flex-1 text-right ${esSanseLocal ? 'text-white font-semibold' : 'text-gray-400'}`}>
           <TeamAvatar name={partido.local} right />
         </div>
-
-        {/* Score */}
         <div className="flex-shrink-0 flex items-center gap-1">
           <ScoreBox score={partido.golLocal} isWin={esSanseLocal && resultado === 'win'} />
           <span className="text-gray-600 text-sm font-bold">:</span>
           <ScoreBox score={partido.golVisitante} isWin={!esSanseLocal && resultado === 'win'} />
         </div>
-
-        {/* Visitante */}
         <div className={`flex-1 text-left ${!esSanseLocal ? 'text-white font-semibold' : 'text-gray-400'}`}>
           <TeamAvatar name={partido.visitante} />
         </div>
       </div>
 
       {/* Footer */}
-      <div className="mt-4 flex items-center justify-between">
+      <div className="section-divider mt-6 mb-4" />
+      <div className="flex items-center justify-between">
         <div className="flex items-center gap-1 text-xs text-gray-500">
           <MapPin size={11} />
           <span>{partido.estadio}</span>
@@ -95,23 +91,13 @@ function TeamAvatar({ name, right }) {
 
 function ProximoCard({ partido, delay }) {
   return (
-    <div className={`fade-up delay-${delay} glass rounded-2xl p-5 border ${
-      partido.destacado
-        ? 'border-blue-500/40 glow-blue'
-        : 'border-white/5 hover:border-blue-500/20'
-    } transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-blue-900/20 relative overflow-hidden`}>
-      {partido.destacado && (
-        <div className="absolute top-3 right-3 text-xs font-bold text-blue-300 bg-blue-600/20 border border-blue-500/30 px-2 py-0.5 rounded-full">
-          Partido Destacado
-        </div>
-      )}
-
-      <div className="flex items-center justify-between mb-4">
+    <div className={`fade-up delay-${delay} glass rounded-2xl p-8 border border-white/5 hover:border-blue-500/20 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-blue-900/20 flex flex-col justify-between min-h-[260px]`}>
+      <div className="flex items-center justify-between mb-6">
         <span className="text-xs text-gray-500 font-medium">{partido.jornada} · {partido.competicion}</span>
       </div>
 
       {/* Teams */}
-      <div className="flex items-center gap-4 mb-5">
+      <div className="flex items-center gap-4 mb-6">
         <div className="flex-1 text-right">
           <TeamAvatar name={partido.local} right />
         </div>
@@ -124,23 +110,12 @@ function ProximoCard({ partido, delay }) {
       </div>
 
       {/* Info grid */}
-      <div className="section-divider mb-3" />
-      <div className="grid grid-cols-1 gap-1.5">
+      <div className="section-divider mb-4" />
+      <div className="grid grid-cols-1 gap-2">
         <InfoRow icon={<Calendar size={12} />} text={`${partido.dia}, ${partido.fecha}`} />
         <InfoRow icon={<Clock size={12} />} text={partido.hora} />
         <InfoRow icon={<MapPin size={12} />} text={partido.estadio} />
       </div>
-
-      {partido.esLocal && (
-        <a
-          href="https://sanse.deporges.com/"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="mt-4 flex items-center justify-center gap-2 py-2.5 bg-blue-600/80 hover:bg-blue-600 text-white text-xs font-semibold rounded-xl transition-all duration-300"
-        >
-          Comprar Entrada <ChevronRight size={13} />
-        </a>
-      )}
     </div>
   );
 }
@@ -223,10 +198,10 @@ export default function Partidos() {
         {/* Content */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
           {tab === 'resultados'
-            ? resultados.map((p, i) => (
+            ? resultados.slice(0, 3).map((p, i) => (
                 <ResultCard key={p.id} partido={p} delay={Math.min(i + 1, 5)} />
               ))
-            : proximosPartidos.map((p, i) => (
+            : proximosPartidos.slice(0, 3).map((p, i) => (
                 <ProximoCard key={p.id} partido={p} delay={Math.min(i + 1, 5)} />
               ))}
         </div>

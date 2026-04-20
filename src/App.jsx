@@ -4,6 +4,7 @@ import Carousel from './components/Carousel'
 import Hero from './components/Hero'
 import Partidos from './components/Partidos'
 import Clasificacion from './components/Clasificacion'
+import Cantera from './components/Cantera'
 import Noticias from './components/Noticias'
 import Footer from './components/Footer'
 
@@ -16,6 +17,7 @@ function App() {
         <Hero />
         <Partidos />
         <Clasificacion />
+        <Cantera />
         <Noticias />
       </main>
       <Footer />
