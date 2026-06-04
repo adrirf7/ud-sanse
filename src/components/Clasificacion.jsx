@@ -1,6 +1,8 @@
 import { useRef, useEffect, useState } from 'react';
-import { TrendingUp, Minus, TrendingDown } from 'lucide-react';
-import { clasificacion } from '../data/mockData';
+import { TrendingUp, Minus, TrendingDown, Pencil } from 'lucide-react';
+import { useData } from '../context/DataContext';
+import { useAdmin } from '../context/AdminContext';
+import EditClasificacionModal from './admin/EditClasificacionModal';
 
 function useInView(threshold = 0.1) {
   const ref = useRef(null);
@@ -39,8 +41,19 @@ function PosIcon({ tipo }) {
 export default function Clasificacion() {
   const [sectionRef, visible] = useInView();
   const [showAll, setShowAll] = useState(false);
+  const [editTarget, setEditTarget] = useState(null);
+  const { clasificacion, setClasificacion } = useData();
+  const { isAdmin } = useAdmin();
 
   const displayed = showAll ? clasificacion : clasificacion.slice(0, 10);
+
+  const handleSave = (updated) => {
+    const sorted = clasificacion
+      .map((eq) => eq.equipo === updated.equipo ? updated : eq)
+      .sort((a, b) => b.pts - a.pts)
+      .map((eq, i) => ({ ...eq, pos: i + 1 }));
+    setClasificacion(sorted);
+  };
 
   return (
     <section id="clasificacion" ref={sectionRef} className="py-24 bg-sanse-dark relative">
@@ -51,19 +64,13 @@ export default function Clasificacion() {
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Header */}
         <div className={`fade-up ${visible ? 'visible' : ''} text-center mb-12`}>
-          <span className="text-xs font-bold tracking-widest uppercase text-blue-400 mb-3 block">
-            Temporada 2025/26
-          </span>
-          <h2 className="font-display text-5xl sm:text-6xl text-white tracking-wider mb-4">
-            CLASIFICACIÓN
-          </h2>
+          <span className="text-xs font-bold tracking-widest uppercase text-blue-400 mb-3 block">Temporada 2025/26</span>
+          <h2 className="font-display text-5xl sm:text-6xl text-white tracking-wider mb-4">CLASIFICACIÓN</h2>
           <p className="text-gray-400 text-sm">Segunda RFEF · Grupo 5</p>
           <div className="mx-auto mt-4 w-20 h-0.5 bg-gradient-to-r from-transparent via-blue-500 to-transparent" />
         </div>
 
-        {/* Legend */}
         <div className={`fade-up delay-1 ${visible ? 'visible' : ''} flex flex-wrap justify-center gap-6 mb-8 text-xs`}>
           {[
             { dot: 'bg-green-500', label: 'Ascenso directo' },
@@ -71,16 +78,13 @@ export default function Clasificacion() {
             { dot: 'bg-red-500', label: 'Descenso' },
           ].map(({ dot, label }) => (
             <div key={label} className="flex items-center gap-2 text-gray-400">
-              <span className={`w-2.5 h-2.5 rounded-full ${dot}`} />
-              {label}
+              <span className={`w-2.5 h-2.5 rounded-full ${dot}`} />{label}
             </div>
           ))}
         </div>
 
-        {/* Table wrapper */}
         <div className={`fade-up delay-2 ${visible ? 'visible' : ''} glass rounded-2xl border border-white/5 overflow-hidden`}>
-          {/* Table header */}
-          <div className="hidden sm:grid grid-cols-[40px_1fr_40px_40px_40px_40px_40px_40px_60px_auto] gap-2 px-4 py-3 text-xs font-bold uppercase tracking-widest text-gray-500 border-b border-white/5">
+          <div className={`hidden sm:grid ${isAdmin ? 'grid-cols-[40px_1fr_40px_40px_40px_40px_40px_40px_60px_auto_36px]' : 'grid-cols-[40px_1fr_40px_40px_40px_40px_40px_40px_60px_auto]'} gap-2 px-4 py-3 text-xs font-bold uppercase tracking-widest text-gray-500 border-b border-white/5`}>
             <span className="text-center">#</span>
             <span>Equipo</span>
             <span className="text-center">PJ</span>
@@ -91,83 +95,66 @@ export default function Clasificacion() {
             <span className="text-center">GC</span>
             <span className="text-center font-bold text-gray-300">Pts</span>
             <span className="text-right">Forma</span>
+            {isAdmin && <span />}
           </div>
 
-          {/* Rows */}
           {displayed.map((eq, i) => {
             const rowCls = eq.esEquipo ? 'table-highlight' : (eq.tipo ? `pos-${eq.tipo}` : '');
             return (
               <div
                 key={eq.equipo}
                 style={{ transitionDelay: visible ? `${(i + 3) * 60}ms` : '0ms' }}
-                className={`fade-up ${visible ? 'visible' : ''} grid grid-cols-[32px_1fr_auto] sm:grid-cols-[40px_1fr_40px_40px_40px_40px_40px_40px_60px_auto] gap-2 items-center px-4 py-3 border-b border-white/5 last:border-0 transition-colors duration-200 hover:bg-white/[0.03] ${rowCls} ${eq.esEquipo ? '' : ''}`}
+                className={`fade-up ${visible ? 'visible' : ''} grid grid-cols-[32px_1fr_auto] ${isAdmin ? 'sm:grid-cols-[40px_1fr_40px_40px_40px_40px_40px_40px_60px_auto_36px]' : 'sm:grid-cols-[40px_1fr_40px_40px_40px_40px_40px_40px_60px_auto]'} gap-2 items-center px-4 py-3 border-b border-white/5 last:border-0 transition-colors duration-200 hover:bg-white/[0.03] ${rowCls}`}
               >
-                {/* Pos */}
                 <div className="flex items-center justify-center gap-1">
                   <PosIcon tipo={eq.tipo} />
-                  <span className={`text-sm font-bold ${eq.esEquipo ? 'text-blue-300' : 'text-gray-400'}`}>
-                    {eq.pos}
-                  </span>
+                  <span className={`text-sm font-bold ${eq.esEquipo ? 'text-blue-300' : 'text-gray-400'}`}>{eq.pos}</span>
                 </div>
-
-                {/* Equipo */}
                 <div className="flex items-center gap-2 min-w-0">
-                  <div className={`w-7 h-7 rounded-full border flex items-center justify-center text-[10px] font-bold flex-shrink-0 ${
-                    eq.esEquipo ? 'bg-blue-600/30 border-blue-400/50 text-white' : 'bg-white/5 border-white/10 text-gray-400'
-                  }`}>
+                  <div className={`w-7 h-7 rounded-full border flex items-center justify-center text-[10px] font-bold flex-shrink-0 ${eq.esEquipo ? 'bg-blue-600/30 border-blue-400/50 text-white' : 'bg-white/5 border-white/10 text-gray-400'}`}>
                     {eq.equipo.split(' ').filter(w => w.length > 2).slice(0, 2).map(w => w[0]).join('') || eq.equipo.slice(0, 2).toUpperCase()}
                   </div>
                   <span className={`text-sm truncate ${eq.esEquipo ? 'text-white font-bold' : 'text-gray-200'}`}>
-                    {eq.equipo}
-                    {eq.esEquipo && (
-                      <span className="hidden sm:inline ml-2 text-xs text-blue-400 font-normal">(Tú)</span>
-                    )}
+                    {eq.equipo}{eq.esEquipo && <span className="hidden sm:inline ml-2 text-xs text-blue-400 font-normal">(Tú)</span>}
                   </span>
                 </div>
-
-                {/* Mobile: Pts only */}
                 <div className="sm:hidden text-right">
                   <span className={`text-base font-bold ${eq.esEquipo ? 'text-blue-300' : 'text-white'}`}>{eq.pts}</span>
                   <span className="text-xs text-gray-500 ml-1">pts</span>
                 </div>
-
-                {/* Desktop stats */}
                 <span className="hidden sm:block text-center text-sm text-gray-400">{eq.pj}</span>
                 <span className="hidden sm:block text-center text-sm text-green-400/80">{eq.g}</span>
                 <span className="hidden sm:block text-center text-sm text-yellow-400/80">{eq.e}</span>
                 <span className="hidden sm:block text-center text-sm text-red-400/80">{eq.p}</span>
                 <span className="hidden sm:block text-center text-sm text-gray-400">{eq.gf}</span>
                 <span className="hidden sm:block text-center text-sm text-gray-400">{eq.gc}</span>
-                <span className={`hidden sm:block text-center text-base font-extrabold ${eq.esEquipo ? 'text-blue-300' : 'text-white'}`}>
-                  {eq.pts}
-                </span>
-
-                {/* Forma */}
+                <span className={`hidden sm:block text-center text-base font-extrabold ${eq.esEquipo ? 'text-blue-300' : 'text-white'}`}>{eq.pts}</span>
                 <div className="hidden sm:flex gap-1 justify-end">
-                  {eq.forma.map((r, j) => (
-                    <FormaCircle key={j} result={r} />
-                  ))}
+                  {eq.forma.map((r, j) => <FormaCircle key={j} result={r} />)}
                 </div>
+                {isAdmin && (
+                  <button onClick={() => setEditTarget(eq)} className="hidden sm:flex items-center justify-center w-7 h-7 rounded-lg bg-white/5 hover:bg-blue-600/40 border border-white/10 transition-colors" title="Editar fila">
+                    <Pencil size={12} className="text-gray-400 hover:text-white" />
+                  </button>
+                )}
               </div>
             );
           })}
         </div>
 
-        {/* Show more/less */}
         <div className={`fade-up delay-3 ${visible ? 'visible' : ''} flex justify-center mt-6`}>
-          <button
-            onClick={() => setShowAll(!showAll)}
-            className="px-6 py-2.5 glass border border-white/10 hover:border-blue-500/30 text-gray-300 hover:text-white text-sm font-medium rounded-full transition-all duration-300 hover:bg-blue-600/10"
-          >
+          <button onClick={() => setShowAll(!showAll)}
+            className="px-6 py-2.5 glass border border-white/10 hover:border-blue-500/30 text-gray-300 hover:text-white text-sm font-medium rounded-full transition-all duration-300 hover:bg-blue-600/10">
             {showAll ? 'Ver menos' : `Ver todos los equipos (${clasificacion.length})`}
           </button>
         </div>
 
-        {/* Note */}
-        <p className="text-center text-xs text-gray-600 mt-4">
-          Datos actualizados a la jornada 26 · Próximamente conectado a la API oficial
-        </p>
+        <p className="text-center text-xs text-gray-600 mt-4">Datos actualizados a la jornada 26 · Próximamente conectado a la API oficial</p>
       </div>
+
+      {editTarget && (
+        <EditClasificacionModal equipo={editTarget} onSave={handleSave} onClose={() => setEditTarget(null)} />
+      )}
     </section>
   );
 }
